@@ -4,6 +4,7 @@ import java.util.*;
 public class TextAnalysis {
     public static void main(String[] args)
             throws FileNotFoundException {
+        // store directory paths into File variable to loop over
         File worksByAusten = new File("./data/austen/");
         File worksByBronte = new File("./data/bronte/");
 
@@ -39,12 +40,17 @@ public class TextAnalysis {
             throws FileNotFoundException {
         Set<String> uniqueWords = new HashSet<String>();
 
+        // Loop over all files in given directory
         for (File file : dir.listFiles()) {
+            // check for .txt extension
             if (file.getName().endsWith(".txt")) {
                 Scanner input = new Scanner(file);
+
+                // parse words out of String
                 input.useDelimiter("[^a-zA-Z']+");
 
                 while (input.hasNext()) {
+                    // toLowerCase to prevent duplicate keys of same word but different case
                     String word = input.next().toLowerCase();
                     uniqueWords.add(word);
                 }
@@ -58,6 +64,7 @@ public class TextAnalysis {
     public static Map<String, Integer> convertSetToMapWithValue0(Set<String> set) {
         Map<String, Integer> map = new TreeMap<String, Integer>();
 
+        // Set values for all new keys 0
         for (String s : set) {
             map.put(s, 0);
         }
@@ -69,12 +76,17 @@ public class TextAnalysis {
     public static Map<String, Integer> getWordCount(Map<String, Integer> wordCountMap, File dir)
             throws FileNotFoundException {
 
+        // Loop over all files in given directory
         for(File file : dir.listFiles()) {
+            // check for .txt extension
             if (file.getName().endsWith(".txt")) {
                 Scanner input = new Scanner(file);
+
+                // parse words out of String
                 input.useDelimiter("[^a-zA-Z']+");
 
                 while (input.hasNext()) {
+                    // toLowerCase to prevent duplicate keys of same word but different case
                     String word = input.next().toLowerCase();
 
                     if (wordCountMap.containsKey(word)) {
@@ -88,13 +100,12 @@ public class TextAnalysis {
         return wordCountMap;
     }
 
-    // convert HashMap into list of entries to sort
+    // Convert HashMap into list of Entries to sort by value
     public static List<Map.Entry<String, Integer>> convertHashMapToList(Map<String, Integer> map) {
         List<Map.Entry<String, Integer>> listOfEntries = new ArrayList<Map.Entry<String, Integer>>(map.entrySet());
 
         // Implemented value comparator to sort entries based on values
         Collections.sort(listOfEntries, new Comparator<Map.Entry<String, Integer>>() {
-            @Override
             public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
                 return o2.getValue().compareTo(o1.getValue());
             }
