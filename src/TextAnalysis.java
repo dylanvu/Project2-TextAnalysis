@@ -4,6 +4,7 @@ import java.util.*;
 public class TextAnalysis {
     public static void main(String[] args)
             throws FileNotFoundException {
+
         // Store directory paths into File variable to loop over
         File worksByAusten = new File("./data/austen/");
         File worksByBronte = new File("./data/bronte/");
@@ -14,8 +15,8 @@ public class TextAnalysis {
         Map<String, Integer> austenWordCount = getWordCount(worksByAusten);
         Map<String, Integer> bronteWordCount = getWordCount(worksByBronte, austenWordCount);
 
-        // Print sorted list of hashMap values
-        printResults(convertHashMapToList(bronteWordCount));
+        // Print top 10 entries sorted list
+        printTop10FromList(convertHashMapToListToSortByValue(bronteWordCount));
     }
 
     private static void printIntro() {
@@ -51,6 +52,7 @@ public class TextAnalysis {
 
                         if (wordCountMap.containsKey(word)) {
                             int count = wordCountMap.get(word) + 1;
+
                             wordCountMap.put(word, count);
                         } else {
                             wordCountMap.put(word, 1);
@@ -89,6 +91,7 @@ public class TextAnalysis {
 
                         if(wordCountMap.containsKey(word)) {
                             int count = wordCountMap.get(word) + 1;
+
                             wordCountMap.put(word, count);
                         }
                         // create new key only if word does not exist in both maps
@@ -104,7 +107,7 @@ public class TextAnalysis {
     }
 
     // Convert HashMap into list of Entries to sort by value
-    private static List<Map.Entry<String, Integer>> convertHashMapToList(Map<String, Integer> map) {
+    private static List<Map.Entry<String, Integer>> convertHashMapToListToSortByValue(Map<String, Integer> map) {
         List<Map.Entry<String, Integer>> listOfEntries = new ArrayList<>(map.entrySet());
 
         // Implemented value comparator to sort entries based on values
@@ -117,13 +120,15 @@ public class TextAnalysis {
         return listOfEntries;
     }
 
-    private static void printResults(List<Map.Entry<String, Integer>> list) {
+    private static void printTop10FromList(List<Map.Entry<String, Integer>> list) {
         System.out.println("Top 10 Unique words in Bronte's works vs. Austen:");
         System.out.printf("%-16s%s", "\tWORD" , "OCCURRENCE\n");
         System.out.println("\t-------------------------");
+
         for (int i = 0; i < 10; i++) {
             String word = list.get(i).getKey();
             int count = list.get(i).getValue();
+
             System.out.printf("%-16s%s", "\t" + word, count + "\n");
         }
     }
